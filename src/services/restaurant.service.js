@@ -33,6 +33,10 @@ const createMenuData = async(req,res) => {
 const updateItemData = async(req,res) => {
 }
 
+const deleteItemData = async(req,res) =>{
+
+}
+
 const createSpecialMenuData = async(req,res) => {
 
 }
@@ -45,8 +49,9 @@ const deleteSpecialMenuData = async(req,res)=>{
     getMenuData,
     createMenuData,
     updateItemData,
+    deleteItemData,
     createSpecialMenuData,
-    deleteSpecialMenuData
-  };
+    deleteSpecialMenuData,
+    };
 
 

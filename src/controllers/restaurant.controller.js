@@ -19,6 +19,10 @@ const updateItem = catchAsync(async(req,res) => {
   const updateItemData = await restaurantService.updateItemData(req.body);
   res.send(updateItemData);
 })
+const deleteItem = catchAsync(async(req,res)=>{
+  const deleteItemData = await restaurantService.deleteItemData(req.body);
+  res.send(deleteItemData);
+})
 
 const createSpecialMenu = catchAsync(async(req,res) => {
   const createSpecialMenuData = await restaurantService.createSpecialMenuData(req.body);
@@ -34,6 +38,7 @@ module.exports = {
   getMenu,
   createMenu,
   updateItem,
+  deleteItem,
   createSpecialMenu,
   deleteSpecialMenu,
 }
