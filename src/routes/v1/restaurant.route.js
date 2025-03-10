@@ -15,12 +15,13 @@ router
   .post(validate(restaurantValidation.createMenu),restaurantController.createMenu);
 router
   .route('/menu/update/item')
-  .put(validate(restaurantValidation.updateItem),restaurantController.updateItem);
+  .put(validate(restaurantValidation.updateItem),restaurantController.updateItem)
+  .delete(validate(restaurantValidation.updateItem),restaurantController.deleteItem);
 
 router
   .route('/menu/special')
   .post(validate(restaurantValidation.createSpecialMenu),restaurantController.createSpecialMenu)
-  .put(validate(restaurantValidation.deleteSpecialMenu),restaurantController.deleteSpecialMenu)
+  .delete(validate(restaurantValidation.deleteSpecialMenu),restaurantController.deleteSpecialMenu)
 
 
 
