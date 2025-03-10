@@ -17,10 +17,10 @@ const defaultRoutes = [
     path: '/users',
     route: userRoute,
   },
-  // {
-  //   path : '/restaurants',
-  //   route : restaurantRoute,
-  // },
+  {
+    path : '/restaurant',
+    route : restaurantRoute,
+  },
   {
     path : '/customer',
     route : customerRoute,
