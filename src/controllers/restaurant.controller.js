@@ -10,6 +10,11 @@ const getMenu = catchAsync(async (req, res) => {
   res.send(menuData);
 });
 
+const createRestaurant = catchAsync(async(req,res)=>{
+  const createRestaurantProfile = await restaurantService.createRestaurantProfile(req.body);
+  res.send(createRestaurantProfile);
+})
+
 const createMenu = catchAsync(async(req,res)=>{
   const createMenuData = await restaurantService.createMenuData(req.body);
   res.send(createMenuData);
@@ -36,6 +41,7 @@ const deleteSpecialMenu = catchAsync(async(req,res) =>{
 
 module.exports = {
   getMenu,
+  createRestaurant,
   createMenu,
   updateItem,
   deleteItem,

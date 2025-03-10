@@ -26,6 +26,10 @@ const getMenuData = async (req, res) => {
   return menu
   };
 
+const createRestaurantProfile = async(req,res) =>{
+
+}
+
 const createMenuData = async(req,res) => {
 
 }
@@ -47,6 +51,7 @@ const deleteSpecialMenuData = async(req,res)=>{
 
   module.exports = {
     getMenuData,
+    createRestaurantProfile,
     createMenuData,
     updateItemData,
     deleteItemData,
