@@ -6,12 +6,18 @@ const { restaurantService} = require('../services');
 
 
 const getMenu = catchAsync(async (req, res) => {
-  const menuData = await restaurantService.getMenuData(req.body);
+  const menuData = await restaurantService.getMenuData({reqBody : req.body});
   res.send(menuData);
 });
 
+const createRestaurant = catchAsync(async(req,res)=>{
+  //we have write logic to extract req.user after decoding token in middleware
+  const createRestaurantProfile = await restaurantService.createRestaurantProfile({reqBody :req.body});
+  res.send(createRestaurantProfile);
+})
+
 const createMenu = catchAsync(async(req,res)=>{
-  const createMenuData = await restaurantService.createMenuData(req.body);
+  const createMenuData = await restaurantService.createMenuData({reqBody : req.body});
   res.send(createMenuData);
 })
 
@@ -36,6 +42,7 @@ const deleteSpecialMenu = catchAsync(async(req,res) =>{
 
 module.exports = {
   getMenu,
+  createRestaurant,
   createMenu,
   updateItem,
   deleteItem,
