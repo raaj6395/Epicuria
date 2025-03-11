@@ -1,7 +1,8 @@
 const Joi = require('joi');
+const { Currency } = require('lucide-react');
 
 const fetchMenu = {
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     restaurantId : Joi.string().required()
   }),
 };
@@ -26,16 +27,20 @@ const createRestaurant = {
 
 const createMenu = {
   body: Joi.object().keys({
-    categories: Joi.array().items(
+    restaurantId : Joi.string().hex().length(24).required(),
+    item: Joi.array().items(
       Joi.object().keys({
         categoryId: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
         categoryName: Joi.string().required(),
-        items: Joi.array().items(
+        data: Joi.array().items(
           Joi.object().keys({
-            itemId: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
             itemName: Joi.string().required(),
+            description :Joi.string().optional(),
+            currency  :Joi.string().required(),
+            imageUrl :Joi.string().uri().allow(''),
             price: Joi.number().positive().required(), // Assuming price is required and positive
-            available: Joi.boolean().optional(), // Optional availability flag
+            availability: Joi.boolean().optional(), // Optional availability flag
+            isVegetarian: Joi.boolean().required(),
           })
         ).required(),
       })

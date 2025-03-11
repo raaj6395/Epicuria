@@ -17,6 +17,7 @@ router
 router
   .route('/menu-create')
   .post(validate(restaurantValidation.createMenu),restaurantController.createMenu);
+  
 router
   .route('/menu-update-item')
   .put(validate(restaurantValidation.updateItem),restaurantController.updateItem)

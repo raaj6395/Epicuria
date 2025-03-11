@@ -6,7 +6,7 @@ const { restaurantService} = require('../services');
 
 
 const getMenu = catchAsync(async (req, res) => {
-  const menuData = await restaurantService.getMenuData(req.body);
+  const menuData = await restaurantService.getMenuData({reqBody : req.body});
   res.send(menuData);
 });
 
@@ -17,7 +17,7 @@ const createRestaurant = catchAsync(async(req,res)=>{
 })
 
 const createMenu = catchAsync(async(req,res)=>{
-  const createMenuData = await restaurantService.createMenuData(req.body);
+  const createMenuData = await restaurantService.createMenuData({reqBody : req.body});
   res.send(createMenuData);
 })
 

@@ -4,7 +4,7 @@ const { toJSON, paginate } = require('./plugins');
 
 const menuSchema = mongoose.Schema(
   {
-    restaurant_id: {
+    restaurantId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Restaurant',
       required: true,
@@ -19,7 +19,7 @@ const menuSchema = mongoose.Schema(
       default: '',
       trim: true,
     },
-    category: {
+    categoryId: {
       type: String,
       required: true,
       trim: true,
@@ -33,8 +33,9 @@ const menuSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      default : 'INR'
     },
-    image_url: {
+    imageUrl: {
       type: String,
       default: '',
       validate: (value) => {
@@ -47,7 +48,7 @@ const menuSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    is_vegetarian: {
+    isVegetarian: {
       type: Boolean,
       default: false,
     },
