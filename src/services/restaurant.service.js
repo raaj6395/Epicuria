@@ -94,8 +94,35 @@ const createMenuData = async({reqBody}) => {
 
 }
 
-const updateItemData = async(req,res) => {
-}
+const updateItemData = async ({ reqBody }) => {
+  if (!reqBody?.restaurantId || !reqBody?.itemId) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Restaurant ID and Item ID are required');
+  }
+
+  const { restaurantId, itemId, ...updateFields } = reqBody;
+
+  const existingRestaurant = await Restaurant.findById(restaurantId).lean();
+  if (!existingRestaurant) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Restaurant Not Found');
+  }
+
+  const existingItem = await Menu.findById(itemId).lean();
+  if (!existingItem) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Item Not Found');
+  }
+
+  const updatedItem = await Menu.findByIdAndUpdate(itemId, updateFields, {
+    new: true,
+    runValidators: true
+  });
+
+  if (!updatedItem) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to Update Data');
+  }
+
+  return updatedItem;
+};
+
 
 const deleteItemData = async(req,res) =>{
 

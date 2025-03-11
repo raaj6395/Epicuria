@@ -22,7 +22,7 @@ const createMenu = catchAsync(async(req,res)=>{
 })
 
 const updateItem = catchAsync(async(req,res) => {
-  const updateItemData = await restaurantService.updateItemData(req.body);
+  const updateItemData = await restaurantService.updateItemData({reqBody : req.body});
   res.send(updateItemData);
 })
 const deleteItem = catchAsync(async(req,res)=>{
