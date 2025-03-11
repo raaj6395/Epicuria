@@ -1,7 +1,6 @@
 const httpStatus = require('http-status');
-const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
-
+const { Restaurant,User } = require('../models');
 
 const getMenuData = async (req, res) => {
 
@@ -26,7 +25,31 @@ const getMenuData = async (req, res) => {
   return menu
   };
 
-const createRestaurantProfile = async(req,res) =>{
+const createRestaurantProfile = async({reqBody}) =>{
+
+  if(!reqBody){
+    throw new ApiError(httpStatus.BAD_REQUEST,'Data required')
+  }
+
+  const { userId } = reqBody;
+
+  // Check if userId exists
+  const [existingUser, existingRestaurant] = await Promise.all([
+      User.findById(userId),
+      Restaurant.findOne({ userId })
+  ]);
+
+  if (!existingUser) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found');
+  }
+
+  if (existingRestaurant) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Restaurant already exists');
+  }
+
+  // Create restaurant profile
+  const createRestaurant = new Restaurant(reqBody);
+  return await createRestaurant.save();
 
 }
 

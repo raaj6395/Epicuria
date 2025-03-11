@@ -11,7 +11,8 @@ const getMenu = catchAsync(async (req, res) => {
 });
 
 const createRestaurant = catchAsync(async(req,res)=>{
-  const createRestaurantProfile = await restaurantService.createRestaurantProfile(req.body);
+  //we have write logic to extract req.user after decoding token in middleware
+  const createRestaurantProfile = await restaurantService.createRestaurantProfile({reqBody :req.body});
   res.send(createRestaurantProfile);
 })
 

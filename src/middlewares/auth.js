@@ -28,4 +28,41 @@ const auth = (...requiredRights) => async (req, res, next) => {
     .catch((err) => next(err));
 };
 
-module.exports = auth;
+const verifyAuthority = (requiredRole) => async (req, res, next) => {
+  const authorizationHeader = req.headers['authorization'];
+
+  // Check if authorization header is missing or doesn't start with 'Bearer '
+  if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Authorization token is missing or invalid' });
+  }
+
+  // Extract token from header
+  const token = authorizationHeader.split(' ')[1];
+
+  // Verify the token using the async/await function
+  const { valid, expired, decoded }  = await tokenService.verifyToken(token);
+
+  if (!valid) {
+    if (expired) {
+      return res.status(401).json({ message: errorCode.expire.message, errorCode : errorCode.expire.code });
+    } else {
+      return res.status(401).json({ message: errorCode.invalid.message, errorCode : errorCode.invalid.code});
+    }
+  }
+
+ let user = decoded;
+  req.user = user;
+
+  let userRole = user.role;
+  // convert role to userRole object
+  userRole = userRoles.getRole(userRole);
+  user.role = userRole;
+
+  if (userRole.level >= requiredRole.level) {
+    next();
+  } else {
+    return res.status(httpStatus.FORBIDDEN).json({ message: 'You are not authorized to access the resource !' });
+  }
+};
+
+module.exports = {auth,verifyAuthority};

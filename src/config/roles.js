@@ -1,12 +1,20 @@
-const allRoles = {
-  user: [],
-  admin: ['getUsers', 'manageUsers'],
-};
 
-const roles = Object.keys(allRoles);
-const roleRights = new Map(Object.entries(allRoles));
+const UserRoles= Object.freeze({
+    ADMIN: {
+      name : "admin",
+      level : 1
+    },
+    USER: {
+      name : "user",
+      level : 0
+    },
+    getRole(name){
+      name = name.toUpperCase();
+      return this[name];
+    }
+  });
 
-module.exports = {
-  roles,
-  roleRights,
-};
+
+module.exports = UserRoles;
+
+

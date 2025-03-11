@@ -9,8 +9,7 @@ const fetchMenu = {
 const createRestaurant = {
   body: Joi.object().keys({
     restaurantName: Joi.string().trim().required(),
-    //we get userId from token
-    // userId: Joi.string().hex().length(24).required(), // Validates MongoDB ObjectId
+    userId: Joi.string().hex().length(24).required(), // Validates MongoDB ObjectId
     profileImageUrl: Joi.string().uri().allow(''), // Optional but must be a valid URL if provided
     coverImageUrl: Joi.string().uri().allow(''),
     backgroundImageUrl: Joi.string().uri().allow(''),
