@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
-const { Restaurant,User ,Menu} = require('../models');
+const { Restaurant,User ,Menu,SpecialMenu} = require('../models');
 
 const getMenuData = async ({ reqBody }) => {
   if (!reqBody?.restaurantId) {
@@ -73,10 +73,11 @@ const createMenuData = async({reqBody}) => {
     for (const menuItem of data) {
       const newMenuItem = new Menu({
         restaurantId: restaurantId,
-        name: menuItem.itemName,
+        itemName: menuItem.itemName,
         description: menuItem.description || '',
         categoryId: categoryId,
         price: menuItem.price,
+        discount : menuItem.discount || 0,
         currency: menuItem.currency,
         imageUrl: menuItem.imageUrl || '',
         availability: menuItem.availability ?? true, // Default true if undefined
@@ -94,20 +95,58 @@ const createMenuData = async({reqBody}) => {
 
 }
 
-const updateItemData = async(req,res) => {
-}
+const updateItemData = async ({ reqBody }) => {
+  if (!reqBody?.restaurantId || !reqBody?.itemId) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Restaurant ID and Item ID are required');
+  }
 
-const deleteItemData = async(req,res) =>{
+  const { restaurantId, itemId, ...updateFields } = reqBody;
 
-}
+  const existingRestaurant = await Restaurant.findById(restaurantId).lean();
+  if (!existingRestaurant) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Restaurant Not Found');
+  }
 
-const createSpecialMenuData = async(req,res) => {
+  const existingItem = await Menu.findById(itemId).lean();
+  if (!existingItem) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Item Not Found');
+  }
 
-}
+  const updatedItem = await Menu.findByIdAndUpdate(itemId, updateFields, {
+    new: true,
+    runValidators: true
+  });
 
-const deleteSpecialMenuData = async(req,res)=>{
+  if (!updatedItem) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to Update Data');
+  }
 
-}
+  return updatedItem;
+};
+
+
+const deleteItemData = async ({ reqBody }) => {
+  const { restaurantId, itemId } = reqBody || {};
+
+  if (!restaurantId || !itemId) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Restaurant ID and Item ID are required');
+  }
+
+  const existingRestaurant = await Restaurant.findById(restaurantId).lean();
+  if (!existingRestaurant) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Restaurant Not Found');
+  }
+
+  const deletedItem = await Menu.findByIdAndDelete(itemId);
+
+  if (!deletedItem) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Item Not Found or Already Deleted');
+  }
+
+  return {message : "Item deleted Successfully"};
+};
+
+
 
   module.exports = {
     getMenuData,
@@ -115,8 +154,6 @@ const deleteSpecialMenuData = async(req,res)=>{
     createMenuData,
     updateItemData,
     deleteItemData,
-    createSpecialMenuData,
-    deleteSpecialMenuData,
     };
 
 
