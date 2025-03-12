@@ -9,7 +9,7 @@ const menuSchema = mongoose.Schema(
       ref: 'Restaurant',
       required: true,
     },
-    name: {
+    itemName: {
       type: String,
       required: true,
       trim: true,
@@ -28,6 +28,10 @@ const menuSchema = mongoose.Schema(
       type: Number,
       required: true,
       min: 0,
+    },
+    discount :{
+      type : Number,
+      default : 0,
     },
     currency: {
       type: String,

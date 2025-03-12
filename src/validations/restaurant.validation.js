@@ -6,7 +6,6 @@ const fetchMenu = {
     restaurantId : Joi.string().required()
   }),
 };
-
 const createRestaurant = {
   body: Joi.object().keys({
     restaurantName: Joi.string().trim().required(),
@@ -24,7 +23,6 @@ const createRestaurant = {
     vegetarian: Joi.boolean().default(false),
   }),
 };
-
 const createMenu = {
   body: Joi.object().keys({
     restaurantId : Joi.string().hex().length(24).required(),
@@ -37,6 +35,7 @@ const createMenu = {
             itemName: Joi.string().required(),
             description :Joi.string().optional(),
             currency  :Joi.string().required(),
+            discount : Joi.number().optional(),
             imageUrl :Joi.string().uri().allow(''),
             price: Joi.number().positive().required(), // Assuming price is required and positive
             availability: Joi.boolean().optional(), // Optional availability flag
@@ -52,8 +51,9 @@ const updateItem ={
         restaurantId : Joi.string().hex().length(24).required(),
         categoryId: Joi.alternatives().try(Joi.string(), Joi.number()).optional(),
         itemId: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
-        name: Joi.string().optional(),
+        itemName: Joi.string().optional(),
         description :Joi.string().optional(),
+        discount : Joi.number().optional(),
         currency  :Joi.string().optional(),
         imageUrl :Joi.string().uri().allow('').optional(),
         price: Joi.number().positive().required().optional(), // Assuming price is required and positive
@@ -61,30 +61,11 @@ const updateItem ={
         isVegetarian: Joi.boolean().optional(),
   })
 }
-const createSpecialMenu = {
-  body : Joi.object().keys({
-    items: Joi.array().items(
-      Joi.object().keys({
-        itemId: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
-        itemName: Joi.string().required(),
-        price: Joi.number().positive().required(), // Assuming price is required and positive
-        available: Joi.boolean().optional(), // Optional availability flag
-      })
-    ).required(),
-  })
 
-}
-const deleteSpecialMenu ={
-  body : Joi.object().keys({
-    itemId: Joi.alternatives().try(Joi.string(), Joi.number()).required()
-  })
-}
 
 module.exports = {
   fetchMenu,
   createRestaurant,
   createMenu,
   updateItem,
-  createSpecialMenu,
-  deleteSpecialMenu
 };
