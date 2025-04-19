@@ -46,21 +46,6 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
 };
 
 /**
- * Verify token and return token doc (or throw an error if it is not valid)
- * @param {string} token
- * @param {string} type
- * @returns {Promise<Token>}
- */
-const verifyToken = async (token, type) => {
-  const payload = jwt.verify(token, config.jwt.secret);
-  const tokenDoc = await Token.findOne({ token, type, user: payload.sub, blacklisted: false });
-  if (!tokenDoc) {
-    throw new Error('Token not found');
-  }
-  return tokenDoc;
-};
-
-/**
  * Generate auth tokens
  * @param {User} user
  * @returns {Promise<Object>}
@@ -84,6 +69,28 @@ const generateAuthTokens = async (user) => {
     },
   };
 };
+
+/**
+ * Verifies a JWT token and decodes the payload using async/await.
+ * @param {string} token - The JWT token to verify.
+ * @returns {Promise<object>} - The decoded payload if the token is valid.
+ * @throws {Error} - Throws an error if the token is invalid or expired.
+ */
+async function verifyToken(token) {
+  try {
+    // Use jwt.verify as an async function with await
+    const decoded = await jwt.verify(token, config.jwt.secret);
+    return { valid: true, expired: false, decoded }; // Return decoded payload
+  } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return { valid: false, expired: true, message: 'Token has expired' };
+    } else if (error.name === 'JsonWebTokenError') {
+      return { valid: false, expired: false, message: 'Invalid token' };
+    } else {
+      return { valid: false, expired: false, message: 'Token verification failed' };
+    }
+  }
+}
 
 /**
  * Generate reset password token
