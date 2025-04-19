@@ -42,7 +42,7 @@ const createRestaurantProfile = async({reqBody}) =>{
   }
 
   if (existingRestaurant) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Restaurant already exists');
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Restaurant already exists with this userId');
   }
 
   // Create restaurant profile

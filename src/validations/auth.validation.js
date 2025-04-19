@@ -4,11 +4,17 @@ const { password } = require('./custom.validation');
 const register = {
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    phoneNumber : Joi.number().required(),
+    phoneNumber: Joi.string()
+      .pattern(/^(\+91[\-\s]?|91[\-\s]?)?[6-9]\d{9}$/)
+      .required()
+      .messages({
+        'string.pattern.base': 'Phone number must be a valid Indian mobile number (with or without +91)',
+      }),
     password: Joi.string().required().custom(password),
     name: Joi.string().required(),
   }),
 };
+
 
 const login = {
   body: Joi.object().keys({
