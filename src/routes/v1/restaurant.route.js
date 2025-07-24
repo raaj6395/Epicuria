@@ -30,8 +30,6 @@ router
   .put(validate(orderValidation.validateOrderId),orderController.updateOrder)
   .delete(validate(orderValidation.validateOrderId),orderController.deleteOrder);
 
-
-
 router
   .route('/order/:id/bill')
 
