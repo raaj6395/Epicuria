@@ -1,31 +1,40 @@
 const httpStatus = require('http-status');
-const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const { Restaurant, Menu, Category } = require('../models');
+
+const getMenuData = async ({ reqBody }) => {
+  if (!reqBody?.restaurantId) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Provide Restaurant ID');
+  }
+  const { restaurantId } = reqBody;
+
+  const existingRestaurant = await Restaurant.findById(restaurantId);
+  if (!existingRestaurant) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Restaurant Not Found');
+  }
+// first db call
+  const categories = await Category.find({ restaurantId });
+  if (categories.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No categories found for this restaurant');
+  }
+// 2nd db call
+  const menus = await Menu.find({ restaurantId });
+  if (menus.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No menu items found for this restaurant');
+  }
 
 
-const getMenuData = async (req, res) => {
+  const grouped = categories.reduce((acc, category) => {
+    const items = menus.filter(
+      menu => menu.categoryId.toString() === category._id.toString()
+    );
+    acc[category.name] = items;
+    return acc;
+  }, {});
 
-  //demo data logic need to be implemented
-  const menu = [
-    {
-      id: 1,
-      name: 'Pizza',
-      price: 10
-    },
-    {
-      id: 2,
-      name: 'Pasta',
-      price: 12
-    },
-    {
-      id: 3,
-      name: 'Salad',
-      price: 8
-    }
-  ];
-  return menu
-  };
+  return grouped;
+};
 
-  module.exports = {
-    getMenuData,
-  };
+module.exports = {
+  getMenuData,
+};

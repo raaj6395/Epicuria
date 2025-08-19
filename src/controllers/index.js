@@ -5,3 +5,4 @@ module.exports.customerController = require('./customer.controller');
 module.exports.menuController = require('./menu.controller');
 module.exports.orderController =require('./order.controller');
 module.exports.analyticsController = require('./analytics.controller');
+module.exports.categoryController = require('./category.controller');

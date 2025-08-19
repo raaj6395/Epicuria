@@ -5,6 +5,7 @@ const restaurantValidation = require('../../validations/restaurant.validation');
 const menuValidation = require('../../validations/menu.validation');
 const orderValidation = require('../../validations/order.validation');
 const analyticsValidation = require('../../validations/analytics.validation');
+const categoryValidation = require('../../validations/category.validation');
 const restaurantController = require('../../controllers/restaurant.controller');
 const menuController = require('../../controllers/menu.controller');
 const orderController = require('../../controllers/order.controller');
@@ -22,6 +23,13 @@ router
   .post(validate(menuValidation.validateCreateMenu),restaurantController.createMenu)
   .put(validate(menuValidation.validateUpdateMenuItem),restaurantController.updateItem)
   .delete(validate(menuValidation.validateUpdateMenuItem),restaurantController.deleteItem);
+
+router
+  .route('/categoryId')
+  .get(validate(categoryValidation.validateCreateCategory))
+  .post()
+  .put()
+  .delete();
 
 router
   .route('/order')
