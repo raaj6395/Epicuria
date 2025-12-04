@@ -6,6 +6,11 @@ const validateFetchMenu = {
     restaurantId : Joi.string().required()
   }),
 };
+const validateFetchMenuById = {
+  params: Joi.object().keys({
+    restaurantId : Joi.string().required()
+  }),
+};
 
 const validateCreateMenu = {
   body: Joi.object().keys({
@@ -53,4 +58,5 @@ module.exports = {
   validateFetchMenu,
   validateCreateMenu,
   validateUpdateMenuItem,
+  validateFetchMenuById,
 };

@@ -10,8 +10,8 @@ const router = express.Router();
 
 // missing validation
 router
-.route('/menu')
-.get(validate(menuValidation.validateFetchMenu),customerController.getMenu);
+.route('/menu/:restaurantId')
+.get(validate(menuValidation.validateFetchMenuById),customerController.getMenu);
 
 // router
 // .route('/order')

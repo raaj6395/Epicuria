@@ -6,7 +6,7 @@ const { customerService} = require('../services');
 
 
 const getMenu = catchAsync(async (req, res) => {
-  const menuData = await customerService.getMenuData({reqBody : req.body});
+  const menuData = await customerService.getMenuData({reqParams : req.params});
   res.send(menuData);
 });
 
